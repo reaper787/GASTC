@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Plan</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='CSS/plan.css')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='Images/favicon.ico')}}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=home" />
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFwQGgnm26QgmhxpfkJPQxh3nMH7n70FU",
+            authDomain: "startup-hub-4ca2c.firebaseapp.com",
+            projectId: "startup-hub-4ca2c",
+            storageBucket: "startup-hub-4ca2c.appspot.com",
+            messagingSenderId: "586445881335",
+            appId: "1:586445881335:web:885e58b708ad1c1c2378f2",
+            measurementId: "G-2HPPN8E3H2"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
+</head>
+
+<body>
+    <header id="navbar">
+        <nav>
+            <ul class="navbar">
+                <li class="link" id="home" onclick="window.location.href = '#' ">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="rgb(17,22,23)">
+                        <path
+                            d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
+                    </svg>
+                    <span class="text">Home</span>
+                    
+                </li>
+                    <li class="link" id="To_Do" onclick="window.location.href = `ToDo.html?companyName=${companyName}` ">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="rgb(17,22,23)">
+                        <path
+                            d="M80-160v-160h160v160H80Zm240 0v-160h560v160H320ZM80-400v-160h160v160H80Zm240 0v-160h560v160H320ZM80-640v-160h160v160H80Zm240 0v-160h560v160H320Z" />
+                    </svg>
+                    <span class="text">To Do</span>
+                    
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <div id="businessPlan"></div>
+    </main>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const companyName = urlParams.get('companyName');
+
+        if (companyName) {
+            db.collection('businessInfo').doc(companyName).get()
+                .then((doc) => {
+                    if (doc.exists) {
+
+                        const plan = doc.data().buisnessPlan;
+                        console.log("Business Plan:", plan);
+
+                        const formattedPlan = formatBusinessPlan(plan);
+
+                        document.getElementById('businessPlan').innerHTML = formattedPlan;
+                    } else {
+                        console.log("No such document!");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error getting document:", error);
+                });
+        } else {
+            console.log("Company name not provided.");
+        }
+
+        // Function to format the business plan text into HTML (Made By Chat GPT)
+        function formatBusinessPlan(planText) {
+            // Format headings
+            planText = planText.replace(/^## (.*)$/gm, '<h2>$1</h2>'); // Convert ## to <h2> headings
+            planText = planText.replace(/^# (.*)$/gm, '<h1>$1</h1>');  // Convert # to <h1> headings
+
+            // Format bold text
+            planText = planText.replace(/\*\*(.*)\*\*/g, '<strong>$1</strong>'); // Convert **bold text** to <strong>
+
+            planText = planText.replace(/^- /gm, '');
+
+            // Format numbered lists (1. item)
+            planText = planText.replace(/(?:^|\n)(\d+)\.\s(.*?)(?=\n|$)/g, '<li>$2</li>'); // Wrap each numbered item in <li>
+            planText = planText.replace(/(<li>.*<\/li>)/g, '<ol>$1</ol>'); // Wrap all <li> items in a single <ol>
+
+
+            // Format paragraphs (any non-heading, non-list text)
+            planText = planText.replace(/^(?!<h\d|<ul|<ol)(.*)$/gm, '<p>$1</p>'); // Wrap remaining text in <p> tags
+
+            return planText;
+        }
+    </script>
+</body>
+
+</html>

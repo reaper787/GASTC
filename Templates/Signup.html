@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortuna Sign-up</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='CSS/Signup.css')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='Images/favicon.ico')}}" >
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFwQGgnm26QgmhxpfkJPQxh3nMH7n70FU",
+            authDomain: "startup-hub-4ca2c.firebaseapp.com",
+            projectId: "startup-hub-4ca2c",
+            storageBucket: "startup-hub-4ca2c.appspot.com",
+            messagingSenderId: "586445881335",
+            appId: "1:586445881335:web:885e58b708ad1c1c2378f2",
+            measurementId: "G-2HPPN8E3H2"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Sign Up</h2>
+        <form id="signupForm">
+            <!-- User details -->
+            <div class="input-group" id="group1">
+                <label for="company">Company Name</label>
+                <input type="text" id="company" name="company">
+            </div>
+            <div class="input-group hidden" id="group2">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <div class="input-group hidden" id="group3">
+                <label for="email">E-mail</label>
+                <input type="text" id="email" name="email">
+            </div>
+
+            <!-- Business-related questions -->
+            
+            <div class="input-group hidden" id="group4">
+                <label for="industry">What industry is your business in?</label>
+                <input type="text" id="industry" name="industry">
+            </div>
+            <div class="input-group hidden" id="group5">
+                <label for="startup-cost">Approx. how much money does it cost to start? (It's okay to say I don't know for any of these questions.)</label>
+                <input type="text" id="startup-cost" name="startup-cost">
+            </div>
+            <div class="input-group hidden" id="group6">
+                <label for="product-list">List your product(s)/service(s): </label>
+                <textarea id="product-list" name="product-list"></textarea>
+            </div>
+            <div class="input-group hidden" id="group7">
+                <label for="product-details">State details about your product(s)/service(s):</label>
+                <textarea id="product-details" name="product-details"></textarea>
+            </div>
+            <div class="input-group hidden" id="group8">
+                <label for="product-prices">State the prices of your goods/services along with production costs:</label>
+                <textarea id="product-prices" name="product-prices"></textarea>
+            </div>
+            <div class="input-group hidden" id="group9">
+                <label for="cost-to-make">Approx. how much does it cost to make your best product/service and what is it?</label>
+                <input type="text" id="cost-to-make" name="cost-to-make">
+            </div>
+            <div class="input-group hidden" id="group10">
+                <label for="sell-price">How much do you want to sell your best product/service for?</label>
+                <input type="text" id="sell-price" name="sell-price">
+            </div>
+            <div class="input-group hidden" id="group11">
+                <label for="product-description">The general theme of your products/services</label>
+                <textarea id="product-description" name="product-description"></textarea>
+            </div>
+            <div class="input-group hidden" id="group12">
+                <label for="help-needed">Do you need any help with your business?</label>
+                <input type="text" id="help-needed" name="help-needed">
+            </div>
+            <div class="input-group hidden" id="group13">
+                <label for="why-buy">Why would people buy your product(s)/service(s)?</label>
+                <textarea id="why-buy" name="why-buy"></textarea>
+            </div>
+            <div class="input-group hidden" id="group14">
+                <label for="self-description">How would you describe yourself (e.g., student, adult)?</label>
+                <input type="text" id="self-description" name="self-description">
+            </div>
+            <div class="input-group hidden" id="group15">
+                <label for="target-audience">How would you describe your target audience?</label>
+                <input type="text" id="target-audience" name="target-audience">
+            </div>
+
+            <button class="button type1 hidden" type="submit" id="submit-btn">
+                <span class="btn-txt">Complete</span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const inputGroups = document.querySelectorAll('.input-group');
+        let currentGroup = 0;
+
+        // Function to transition between input fields
+        function transitionToNextGroup() {
+            const currentInput = inputGroups[currentGroup].querySelector('input, textarea');
+            if (currentInput.value.trim() !== '') {
+                // Remove required from current group and add to next
+                currentInput.removeAttribute('required');
+                inputGroups[currentGroup].classList.add('fade-out');
+                setTimeout(() => {
+                    inputGroups[currentGroup].classList.add('hidden');
+                    if (currentGroup + 1 < inputGroups.length) {
+                        currentGroup++;
+                        inputGroups[currentGroup].classList.remove('hidden');
+                        inputGroups[currentGroup].querySelector('input, textarea').setAttribute('required', true);
+                        setTimeout(() => {
+                            inputGroups[currentGroup].classList.add('fade-in');
+                        }, 10);
+                    } else {
+                        document.getElementById('submit-btn').classList.remove('hidden');
+                        setTimeout(() => {
+                            document.getElementById('submit-btn').classList.add('fade-in');
+                        }, 10);
+                    }
+                }, 500);
+            }
+        }
+
+        // Event listener to transition when Enter is pressed
+        inputGroups.forEach(group => {
+            const input = group.querySelector('input, textarea');
+            input.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();  // Prevent the default form submission behavior
+                    transitionToNextGroup();
+                }
+            });
+        });
+        // Submit form and save data to Firebase Firestore
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const companyName = document.getElementById('company').value;
+            const formData = {
+                password: document.getElementById('password').value,
+                email: document.getElementById('email').value,
+                industry: document.getElementById('industry').value,
+                startupCost: document.getElementById('startup-cost').value,
+                productList: document.getElementById('product-list').value,
+                productDetails: document.getElementById('product-details').value,
+                productPrices: document.getElementById('product-prices').value,
+                costToMake: document.getElementById('cost-to-make').value,
+                sellPrice: document.getElementById('sell-price').value,
+                productDescription: document.getElementById('product-description').value,
+                helpNeeded: document.getElementById('help-needed').value,
+                whyBuy: document.getElementById('why-buy').value,
+                selfDescription: document.getElementById('self-description').value,
+                companyName,
+                targetAudience: document.getElementById('target-audience').value
+            };
+
+            db.collection('businessInfo').doc(companyName).set(formData)
+            .then(() => {
+                alert('Form successfully submitted!');
+                console.log('Data written to Firestore:', formData);
+                window.location.href = "{{url_for('login_form')}}"
+            })
+            .catch(error => {
+                console.error('Error writing document: ', error);
+                alert('Error submitting form: ' + error.message);
+            });
+            
+        });
+    </script>
+</body>
+</html>

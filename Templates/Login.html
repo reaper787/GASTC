@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortuna Login</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='Images/favicon.ico')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='CSS/Signup.css')}}">
+    <!-- Firebase SDK (version 8) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFwQGgnm26QgmhxpfkJPQxh3nMH7n70FU",
+            authDomain: "startup-hub-4ca2c.firebaseapp.com",
+            projectId: "startup-hub-4ca2c",
+            storageBucket: "startup-hub-4ca2c.appspot.com",
+            messagingSenderId: "586445881335",
+            appId: "1:586445881335:web:885e58b708ad1c1c2378f2",
+            measurementId: "G-2HPPN8E3H2"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
+</head>
+<body>
+    <div class="login-container">
+        <form id="loginForm">
+            <!-- User details -->
+            <div class="input-group" id="group1">
+                <label for="company">Company Name</label>
+                <input type="text" id="company" name="company" required>
+            </div>
+            <div class="input-group" id="group2">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button class="button type1" type="submit" id="submit-btn">
+                <span class="btn-txt">Login</span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const planUrl = "{{ url_for('plan') }}";
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+                e.preventDefault();  // Prevent form submission
+
+                const companyName = document.getElementById('company').value.trim();
+                const inputPassword = document.getElementById('password').value.trim();
+
+                doc = db.collection('businessInfo').doc(companyName).get()
+                    .then(doc => {
+                        if (doc.exists) {
+                            const data = doc.data();
+
+                            if (data.password && data.password === inputPassword) {
+                                fetch('http://127.0.0.1:5000/login', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({ companyName }),
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log('Response from server:', data);
+                                    alert('Login successful and company name sent to server');
+                                })
+                                .catch(error => {
+                                    console.error('Error sending data to server:', error);
+                                });
+
+                                window.location.href = `${planUrl}?companyName=${companyName}`;
+
+                            }else{
+                                alert('Incorrect password. Please try again.');
+                            }
+
+                            
+                        } else {
+                            alert('Company not found. Please create an account if you haven\'t aldready');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching document:', error);
+                        alert('Error logging in: ' + error.message);
+                    });
+            });
+
+    </script>
+</body>
+</html>

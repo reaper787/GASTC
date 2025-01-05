@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{{url_for('static', filename='CSS/Landing.css')}}">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Fortuna</title>
+        <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='Images/favicon.ico')}}">
+    </head>
+    <body>
+        <header class="header">
+            <a href="#" class="logo">
+                Fortuna
+            </a>
+            <nav class="navbar">
+                <a href="{{ url_for('login_form') }}">Login</a>
+            </nav>
+        </header>
+        <main>
+            <div id="center-thingyLP">
+                <h1>Create your startup today!</h1>
+                <button class="pill" onclick="GotoSignUp()">Get Started</button>
+            </div>
+        </main>
+        <script>
+            function GotoSignUp() {
+                window.location.href = "{{ url_for('signup') }}";
+            }
+        </script>
+    </body>
+</html>
