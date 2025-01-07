@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,6 +27,7 @@
         const db = firebase.firestore();
     </script>
 </head>
+
 <body>
     <div class="login-container">
         <form id="loginForm">
@@ -47,24 +49,24 @@
     <script>
         const planUrl = "{{ url_for('plan') }}";
         document.getElementById('loginForm').addEventListener('submit', function (e) {
-                e.preventDefault();  // Prevent form submission
+            e.preventDefault();  // Prevent form submission
 
-                const companyName = document.getElementById('company').value.trim();
-                const inputPassword = document.getElementById('password').value.trim();
+            const companyName = document.getElementById('company').value.trim();
+            const inputPassword = document.getElementById('password').value.trim();
 
-                doc = db.collection('businessInfo').doc(companyName).get()
-                    .then(doc => {
-                        if (doc.exists) {
-                            const data = doc.data();
+            doc = db.collection('businessInfo').doc(companyName).get()
+                .then(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
 
-                            if (data.password && data.password === inputPassword) {
-                                fetch('http://127.0.0.1:5000/login', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify({ companyName }),
-                                })
+                        if (data.password && data.password === inputPassword) {
+                            fetch('http://127.0.0.1:5000/login', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ companyName }),
+                            })
                                 .then(response => response.json())
                                 .then(data => {
                                     console.log('Response from server:', data);
@@ -74,23 +76,24 @@
                                     console.error('Error sending data to server:', error);
                                 });
 
-                                window.location.href = `${planUrl}?companyName=${companyName}`;
+                            window.location.href = `${planUrl}?companyName=${companyName}`;
 
-                            }else{
-                                alert('Incorrect password. Please try again.');
-                            }
-
-                            
                         } else {
-                            alert('Company not found. Please create an account if you haven\'t aldready');
+                            alert('Incorrect password. Please try again.');
                         }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching document:', error);
-                        alert('Error logging in: ' + error.message);
-                    });
-            });
+
+
+                    } else {
+                        alert('Company not found. Please create an account if you haven\'t aldready');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching document:', error);
+                    alert('Error logging in: ' + error.message);
+                });
+        });
 
     </script>
 </body>
+
 </html>
