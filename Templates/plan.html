@@ -28,45 +28,70 @@
 </head>
 
 <body>
-    <header id="navbar">
-        <nav>
-            <ul class="navbar">
-                <li class="link" id="home" onclick="window.location.href = '#' ">
+    <div class="loader" id="loader">
+        <div id="myProgress">
+            <div id="myBar"></div>
+        </div>
+    </div>
+    <div class="content" id="content">
+        <header id="navbar">
+            <nav>
+                <ul class="navbar">
+                    <li class="link" id="home" onclick="window.location.href = '#' ">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="rgb(17,22,23)">
-                        <path
-                            d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
-                    </svg>
-                    <span class="text">Home</span>
-                    
-                </li>
-                    <li class="link" id="To_Do" onclick="window.location.href = `ToDo.html?companyName=${companyName}` ">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="rgb(17,22,23)">
+                            <path
+                                d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
+                        </svg>
+                        <span class="text">Home</span>
+                        
+                    </li>
+                        <li class="link" id="To_Do" onclick="window.location.href = `ToDo.html?companyName=${companyName}` ">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="rgb(17,22,23)">
-                        <path
-                            d="M80-160v-160h160v160H80Zm240 0v-160h560v160H320ZM80-400v-160h160v160H80Zm240 0v-160h560v160H320ZM80-640v-160h160v160H80Zm240 0v-160h560v160H320Z" />
-                    </svg>
-                    <span class="text">To Do</span>
-                    
-                </li>
-            </ul>
-        </nav>
-    </header>
-    
-    <main>
-        <div id="businessPlan"></div>
-    </main>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="rgb(17,22,23)">
+                            <path
+                                d="M80-160v-160h160v160H80Zm240 0v-160h560v160H320ZM80-400v-160h160v160H80Zm240 0v-160h560v160H320ZM80-640v-160h160v160H80Zm240 0v-160h560v160H320Z" />
+                        </svg>
+                        <span class="text">To Do</span>
+                        
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <div id="businessPlan"></div>
+        </main>
+    </div>
 
     <script>
+        //Sitepoint.com
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        //me
         const urlParams = new URLSearchParams(window.location.search);
         const companyName = urlParams.get('companyName');
 
         if (companyName) {
             db.collection('businessInfo').doc(companyName).get()
                 .then((doc) => {
+                    var visits = doc.data().visits;
+
                     if (doc.exists) {
 
                         const plan = doc.data().buisnessPlan;
+                    
+                        if (visits > 1){
+                            document.getElementById('loader').style.display = 'none';
+                            document.getElementById('content').style.display = 'block';
+                        } else {
+                            sleep(60000).then(() => {
+                                document.getElementById('loader').style.display = 'none';
+                                document.getElementById('content').style.display = 'block';
+                            });
+                        }
+                        
                         console.log("Business Plan:", plan);
 
                         const formattedPlan = formatBusinessPlan(plan);

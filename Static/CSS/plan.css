@@ -203,3 +203,49 @@ header{
     }
 
 }
+
+.content{
+    display: none;
+}
+
+.loader{
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#myProgress {
+    width: 70%;
+    background-color: #bcbcbc;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    position: absolute;
+    height: 30px;
+    border-radius: 30px;
+}
+
+#myBar {
+    width: 1%;
+    height: 30px;
+    background-color: #0476aa;
+    animation: fill 60s linear forwards;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    position: absolute;
+    border-radius: 30px;
+}
+
+@keyframes fill {
+    from{
+        width: 1%;
+    }
+
+    to{
+        width: 100%;
+    }
+}
