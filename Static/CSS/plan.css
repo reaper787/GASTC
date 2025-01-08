@@ -23,7 +23,7 @@ li {
 }
 
 body {
-    
+
     font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
     line-height: 1.6;
     color: #000000;
@@ -45,14 +45,14 @@ body {
             color: #000000;
             margin-bottom: 20px;
         }
-    
+
         h2 {
             font-size: 1.5rem;
             color: #000000;
             margin-top: 20px;
             margin-bottom: 10px;
         }
-    
+
         p {
             font-family: 'Poppins', 'Montserrat', sans-serif;
             margin-bottom: 15px;
@@ -60,25 +60,25 @@ body {
             line-height: 1.8;
             text-align: justify;
         }
-    
+
         ol,
         ul {
             margin: 15px 0;
             padding-left: 20px;
         }
-    
+
         li {
             margin-bottom: 10px;
             font-size: 1rem;
         }
-    
+
         strong {
             color: #4b4b4b;
             font-weight: bold;
         }
     }
-    
-        
+
+
 }
 
 
@@ -120,9 +120,10 @@ body {
     }
 }
 
-header{
+header {
     align-self: flex-start;
     margin-right: auto;
+
     nav {
         width: 5rem;
         height: 100vh;
@@ -133,40 +134,48 @@ header{
 
         &:hover {
             width: 16rem;
-            .link{
+
+            .link {
                 width: 16rem;
                 display: flex;
             }
         }
 
-        .navbar{
+        .navbar {
             list-style: none;
             padding: 0;
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            svg{
+
+            svg {
                 min-width: 2rem;
                 margin: 0 1.5rem;
                 padding: 0;
             }
-            .link{
+
+            .link {
                 display: flex;
                 align-items: center;
                 height: 5rem;
                 color: rgb(205, 205, 205);
                 transition: all 200ms ease-in-out;
-                &:hover{
+
+                &:hover {
                     background-color: rgb(67, 76, 79);
-                    .text{
+
+                    .text {
                         display: flex;
                     }
-                    svg{
-                        fill: rgb(205, 205, 205);;
+
+                    svg {
+                        fill: rgb(205, 205, 205);
+                        ;
                     }
                 }
-                .text{
+
+                .text {
                     display: none;
                     margin-left: 1rem;
                     transition: display 1s ease;
@@ -175,6 +184,7 @@ header{
         }
     }
 }
+
 .pill {
     border-color: #1A1A1A;
     border-style: solid;
@@ -202,50 +212,4 @@ header{
         transform: translateY(0px);
     }
 
-}
-
-.content{
-    display: none;
-}
-
-.loader{
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#myProgress {
-    width: 70%;
-    background-color: #bcbcbc;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-    position: absolute;
-    height: 30px;
-    border-radius: 30px;
-}
-
-#myBar {
-    width: 1%;
-    height: 30px;
-    background-color: #0476aa;
-    animation: fill 60s linear forwards;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-    position: absolute;
-    border-radius: 30px;
-}
-
-@keyframes fill {
-    from{
-        width: 1%;
-    }
-
-    to{
-        width: 100%;
-    }
 }
