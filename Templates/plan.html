@@ -87,7 +87,11 @@
         }
 
         // Function to format the business plan text into HTML (Made By Chat GPT)
+
         function formatBusinessPlan(planText) {
+            // Remove lines starting with ###
+            planText = planText.replace(/^###.*$/gm, '');
+
             // Format headings
             planText = planText.replace(/^## (.*)$/gm, '<h2>$1</h2>'); // Convert ## to <h2> headings
             planText = planText.replace(/^# (.*)$/gm, '<h1>$1</h1>');  // Convert # to <h1> headings
@@ -95,18 +99,16 @@
             // Format bold text
             planText = planText.replace(/\*\*(.*)\*\*/g, '<strong>$1</strong>'); // Convert **bold text** to <strong>
 
-            planText = planText.replace(/^- /gm, '');
-
             // Format numbered lists (1. item)
             planText = planText.replace(/(?:^|\n)(\d+)\.\s(.*?)(?=\n|$)/g, '<li>$2</li>'); // Wrap each numbered item in <li>
             planText = planText.replace(/(<li>.*<\/li>)/g, '<ol>$1</ol>'); // Wrap all <li> items in a single <ol>
-
 
             // Format paragraphs (any non-heading, non-list text)
             planText = planText.replace(/^(?!<h\d|<ul|<ol)(.*)$/gm, '<p>$1</p>'); // Wrap remaining text in <p> tags
 
             return planText;
         }
+
     </script>
 </body>
 
