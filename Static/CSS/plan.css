@@ -122,7 +122,6 @@ body {
 
 header {
     align-self: flex-start;
-    margin-right: auto;
 
     nav {
         width: 5rem;
