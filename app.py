@@ -15,7 +15,7 @@ client = OpenAI(
 
 model = "gpt-4o-mini"
 temperature = 0.3
-max_tokens = 500
+max_tokens = 1500
 
 
 
