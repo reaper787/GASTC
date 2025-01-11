@@ -46,6 +46,8 @@
         </form>
     </div>
 
+    <h1 class="hidden loading">Loading...</h1>
+
     <script>
         const planUrl = "{{ url_for('plan') }}";
         document.getElementById('loginForm').addEventListener('submit', function (e) {
@@ -58,9 +60,13 @@
                 .then(doc => {
                     if (doc.exists) {
                         const data = doc.data();
+                        //Sitepoint.com
+                        function sleep(ms) {
+                            return new Promise(resolve => setTimeout(resolve, ms));
+                        }
 
                         if (data.password && data.password === inputPassword) {
-                            fetch('http://127.0.0.1:5000/login', {
+                            fetch('http://127.0.0.1:5000/prompt', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -75,6 +81,12 @@
                                 .catch(error => {
                                     console.error('Error sending data to server:', error);
                                 });
+                            
+                            if (data.visits == null){
+                                document.getElementById('loginForm').style.display = 'none';
+                                document.querySelector('.loading').classList.remove('hidden');
+                                sleep(60000);
+                            }
 
                             window.location.href = `${planUrl}?companyName=${companyName}`;
 

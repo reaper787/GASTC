@@ -39,7 +39,7 @@ def getResponse(messages):
     )
     return completion.choices[0].message.content
 
-@app.route('/login', methods=['POST'])
+@app.route('/prompt', methods=['POST'])
 def handle_login():
             data = request.json
             company_name = data.get('companyName')
@@ -141,7 +141,7 @@ def handle_login():
 def home():
     return render_template('index.html')
 
-@app.route('/login_form')
+@app.route('/login')
 def login_form():
     return render_template('Login.html')
 

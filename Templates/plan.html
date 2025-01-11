@@ -106,6 +106,15 @@
             // Format paragraphs (any non-heading, non-list text)
             planText = planText.replace(/^(?!<h\d|<ul|<ol)(.*)$/gm, '<p>$1</p>'); // Wrap remaining text in <p> tags
 
+            planText = planText.replace(/---/g, () => {
+                sectionCounter++;
+                return `<section id="section${sectionCounter}">`;
+            });
+
+            // Close all sections at the end
+            planText = planText.replace(/<\/section>\s*(?=<section|$)/g, '</section>\n'); // Ensure section tags are properly closed
+
+
             return planText;
         }
 

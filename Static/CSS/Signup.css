@@ -183,3 +183,9 @@ h2 {
 .hidden {
     display: none;
 }
+.loading{
+    font-family:'Montserrat', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+}
