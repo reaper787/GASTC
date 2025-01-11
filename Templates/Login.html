@@ -82,7 +82,7 @@
                                     console.error('Error sending data to server:', error);
                                 });
                             
-                            if (data.visits == null){
+                            if (data.visits == null || data.visits == undefined || data.visits == 0 || data.visits == '' || data.visits == 1) {
                                 document.getElementById('loginForm').style.display = 'none';
                                 document.querySelector('.loading').classList.remove('hidden');
                                 sleep(60000);

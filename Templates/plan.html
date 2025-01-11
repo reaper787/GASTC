@@ -29,6 +29,13 @@
 </head>
 
 <body>
+    <div class="loading-container">
+        <div class="loading-animation">
+            <div class="description"></div>
+            <div class="images"></div>
+        </div>
+        <div class="loading-text">Content Generating...</div>
+    </div>
     <header id="navbar">
         <nav>
             <ul class="navbar">
@@ -65,30 +72,27 @@
         const companyName = urlParams.get('companyName');
 
         if (companyName) {
-            db.collection('businessInfo').doc(companyName).get()
-                .then((doc) => {
-                    if (doc.exists) {
+            // Real-time listener for the company's document
+            db.collection('businessInfo').doc(companyName).onSnapshot((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    const plan = data.buisnessPlan; 
+                    console.log("Business Plan:", plan);
 
-                        const plan = doc.data().buisnessPlan;
-                        console.log("Business Plan:", plan);
-
-                        const formattedPlan = formatBusinessPlan(plan);
-
-                        document.getElementById('businessPlan').innerHTML = formattedPlan;
-                    } else {
-                        console.log("No such document!");
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error getting document:", error);
-                });
+                    const formattedPlan = formatBusinessPlan(plan);
+                    document.getElementById('businessPlan').innerHTML = formattedPlan;
+                }
+            }, (error) => {
+                console.error("Error listening for document changes:", error);
+            });
         } else {
             console.log("Company name not provided.");
         }
 
-        // Function to format the business plan text into HTML (Made By Chat GPT)
-
+        // Function to format the business plan text into HTML
         function formatBusinessPlan(planText) {
+            if (!planText) return "<p>No business plan content available.</p>";
+
             // Remove lines starting with ###
             planText = planText.replace(/^###.*$/gm, '');
 
@@ -106,19 +110,11 @@
             // Format paragraphs (any non-heading, non-list text)
             planText = planText.replace(/^(?!<h\d|<ul|<ol)(.*)$/gm, '<p>$1</p>'); // Wrap remaining text in <p> tags
 
-            planText = planText.replace(/---/g, () => {
-                sectionCounter++;
-                return `<section id="section${sectionCounter}">`;
-            });
-
-            // Close all sections at the end
-            planText = planText.replace(/<\/section>\s*(?=<section|$)/g, '</section>\n'); // Ensure section tags are properly closed
-
-
             return planText;
         }
 
     </script>
+    <script src="{{ url_for('static', filename='loading.js') }}"></script>
 </body>
 
 </html>

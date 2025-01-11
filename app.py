@@ -1,4 +1,5 @@
 import firebase_admin
+import json
 from firebase_admin import credentials
 from firebase_admin import firestore
 from flask import Flask, request, jsonify, render_template
@@ -17,10 +18,7 @@ model = "gpt-4o-mini"
 temperature = 0.3
 max_tokens = 1500
 
-
-
-
-cred = credentials.Certificate("config/serviceAccountKey.json")
+cred = credentials.Certificate(json.loads(os.environ.get('FIRESTORE_CONFIG')))
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
@@ -154,4 +152,5 @@ def plan():
     return render_template('plan.html')
 
 if __name__ == '__main__':
-    serve(app, host='0.0.0.0', port=5000)
+    #serve(app, host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
