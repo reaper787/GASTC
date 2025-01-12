@@ -2,7 +2,11 @@ const randomContent = [
     "Content Generating...",
     "Calculating the meaning of life... (It's 42, by the way.)",
     "Just kidding, it's just loading.",
-    "Counting down the seconds until your impatience grows... 5... 4... 3... 2... 1... Just kidding, it's still loading."
+    "Counting down the seconds until your impatience grows...",
+    "5... 4... 3... 2... 1...",
+    "Hre's a random fact while you wait for this page to load: The average person spends 6 months of their life waiting for the microwave to heat up their food.",
+    "Did you know that the average person spends 3 years of their life waiting in line? (Just thought I'd tell you that since we're spending so much time together) ",
+    
 ];
 
 let lastIndex = -1; // To track the last index used
