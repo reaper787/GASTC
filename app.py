@@ -15,7 +15,7 @@ client = OpenAI(
 )
 
 model = "gpt-4o-mini"
-temperature = 0.3
+temperature = 0.7
 max_tokens = 1500
 
 cred = credentials.Certificate(json.loads(os.environ.get('FIRESTORE_CONFIG')))
