@@ -52,6 +52,11 @@
     <h1 class="hidden loading">Loading...</h1>
 
     <script>
+        if (localStorage.getItem('companyName') != null){
+
+            window.location.href = "{{ url_for('plan') }}";
+
+        }
         const planUrl = "{{ url_for('plan') }}";
         document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault();  // Prevent form submission
