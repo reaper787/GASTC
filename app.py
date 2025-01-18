@@ -133,8 +133,10 @@ def handle_login():
                 "prompt": prompt,
                 "buisnessPlan": buisness_plan,
             })
+        
+        print(doc_dict.get('buisnessPlan') + f' {visits}')
 
-        return jsonify({'message': f"Company name {company_name} exists", 'data': doc_dict}), 200
+        return jsonify({'message': f"Company name {company_name} exists", 'data': doc_dict, 'company_name': company_name}), 200
 
     else:
         print('Company doesn\'t exist')

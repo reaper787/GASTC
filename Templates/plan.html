@@ -63,11 +63,14 @@
     </main>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const companyName = urlParams.get('companyName');
+        // const urlParams = new URLSearchParams(window.location.search);
+        window.onload = function() { 
+            console.log("Page loaded");
+        }
+        const companyName = localStorage.getItem("companyName") || sessionStorage.getItem("companyName");
+        console.log("Company Name:", companyName);
 
         if (companyName) {
-            // Real-time listener for the company's document
             db.collection('businessInfo').doc(companyName).onSnapshot((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
@@ -84,7 +87,7 @@
             console.log("Company name not provided.");
         }
 
-        // Function to format the business plan text into HTML
+        // Function to format the business plan text into HTML CHATGPT
         function formatBusinessPlan(planText) {
             if (!planText) return "<p>No business plan content available.</p>";
 
@@ -107,7 +110,7 @@
 
             return planText;
         }
-
+        
         function analize(){
             window.location.href=`{{url_for('market')}}`;
             fetch('http://127.0.0.1:5000/market', {
@@ -118,6 +121,7 @@
                 body: JSON.stringify({ companyName }),
             })
         }
+
     </script>
     <script src="{{ url_for('static', filename='loading.js') }}"></script>
 </body>

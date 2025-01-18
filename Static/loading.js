@@ -36,25 +36,26 @@ function changeText() {
 // Adjust the interval to allow sufficient time for fade-in, display, and fade-out
 setInterval(() => {
     changeText();
-}, 5000); // Text changes every 5 seconds
+}, 5000);
+  if (companyName) {
+      db.collection('businessInfo').doc(companyName).onSnapshot((doc) => {
+          if (doc.exists) {
+              const data = doc.data();
+              const visits = data.visits;
+            
+              if(visits > 1) {
+                  document.querySelector('.loading-container').style.display = 'none';
+                  document.querySelector('header').style.display = 'block';
+                  document.querySelector('main').style.display = 'block';
+                  document.querySelector('body').style.background = "linear-gradient(45deg, rgba(255, 255, 255, 0.195), rgba(135, 217, 237, 0.493))";
+              }
+          }
+      });
+  }
 
-setTimeout(() => {
-    document.querySelector('.loading-container').style.display = 'none';
-    document.querySelector('header').style.display = 'block';
-    document.querySelector('main').style.display = 'block';
-    document.querySelector('body').style.background = "linear-gradient(45deg, rgba(255, 255, 255, 0.195), rgba(135, 217, 237, 0.493))";
-}, 60000);
-db.collection('businessInfo').doc(companyName).onSnapshot((doc) => {
-    if (doc.exists) {
-        const data = doc.data();
-        const visits = data.visits;
-        console.log("Visits:", visits);
-
-        if(visits > 1){
-            document.querySelector('.loading-container').style.display = 'none';
-            document.querySelector('header').style.display = 'block';
-            document.querySelector('main').style.display = 'block';
-            document.querySelector('body').style.background = "linear-gradient(45deg, rgba(255, 255, 255, 0.195), rgba(135, 217, 237, 0.493))";
-        }
-    }
-})
+  setTimeout(() => {
+      document.querySelector('.loading-container').style.display = 'none';
+      document.querySelector('header').style.display = 'block';
+      document.querySelector('main').style.display = 'block';
+      document.querySelector('body').style.background = "linear-gradient(45deg, rgba(255, 255, 255, 0.195), rgba(135, 217, 237, 0.493))";
+  }, 60000);

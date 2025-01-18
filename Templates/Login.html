@@ -43,6 +43,9 @@
             <button class="button type1" type="submit" id="submit-btn">
                 <span class="btn-txt">Login</span>
             </button>
+            <label for= "RememberMe">
+                <input type="checkbox" id="RememberMe" name="RememberMe"> Remember Me
+            </label>
         </form>
     </div>
 
@@ -55,6 +58,11 @@
 
             const companyName = document.getElementById('company').value.trim();
             const inputPassword = document.getElementById('password').value.trim();
+
+            if(!companyName || !inputPassword) {
+                alert("Please fill in all fields.");
+                return;
+            }
 
             doc = db.collection('businessInfo').doc(companyName).get()
                 .then(doc => {
@@ -73,23 +81,23 @@
                                 },
                                 body: JSON.stringify({ companyName }),
                             })
-                                .then(response => response.json())
-                                .then(data => {
-                                    console.log('Response from server:', data);
-                                    alert('Login successful and company name sent to server');
-                                })
-                                .catch(error => {
-                                    console.error('Error sending data to server:', error);
-                                });
+                                 .then(response => response.json())
+                                 .then(data => {
+                                     console.log('Response from server:', data);
+                                 })
+                                 .catch(error => {
+                                     console.error('Error sending data to server:', error);
+                                 });
+                        
+                            const cb = document.querySelector('#RememberMe');
                             
-                            if (data.visits == null || data.visits == undefined || data.visits == 0 || data.visits == '' || data.visits == 1) {
-                                document.getElementById('loginForm').style.display = 'none';
-                                document.querySelector('.loading').classList.remove('hidden');
-                                sleep(60000);
+                            if (cb.checked) {
+                                localStorage.setItem('companyName', companyName);
+                            } else {
+                                sessionStorage.setItem('companyName', companyName);
                             }
-
-                            window.location.href = `${planUrl}?companyName=${companyName}`;
-
+                            
+                            window.location.href = `${planUrl}`;
                         } else {
                             alert('Incorrect password. Please try again.');
                         }
@@ -103,7 +111,7 @@
                     console.error('Error fetching document:', error);
                     alert('Error logging in: ' + error.message);
                 });
-        });
+        })
 
     </script>
 </body>
