@@ -1,6 +1,10 @@
 firebase_admin==6.6.0
 Flask==3.1.0
 Flask_Cors==5.0.0
-openai==1.59.3
+openai==1.59.7
+phidata==2.7.8
 python-dotenv==1.0.1
 waitress==3.0.2
+googlesearch-python==1.2.5
+pycountry==24.6.1
+yfinance==0.2.51

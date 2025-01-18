@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Analysis</title>
+    <style>
+        h1::before {
+            content: "";
+            animation: swap 7s linear forwards;
+            transition: all 0.2s ease-in-out;
+        }
+
+        @keyframes swap {
+            0% {
+                content: "Sorry Boss. So Sorry. I won't mess up the error ever again. I promise.";
+            }
+            20% {
+                content: "404 Error. Page Not Found.";
+            }
+            40% {
+                content: "Oh Shoot. Wrong Error Sorry";
+            }
+            60% {
+                content: "One Second. Imma Find out right now what it was supposed to be.";
+            }
+            80%{
+                content: "Okay. I found it. Fixing Code. 3. 2. 1. BOOM!";
+            }
+
+            100% {
+                content: "Page Under Construction. Please Wait. May take a while. Likley Months. Maybe Years. Who knows?";
+            }
+        }
+
+        h1 {
+            min-height: 1.2em;
+        }
+
+        img{
+            animation: hide-show 7s forwards;
+        }
+
+        @keyframes hide-show {
+            0%{
+                display: none;
+            }
+            99%{
+                display: none;
+            }
+            100%{
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1></h1>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbwr5mVTpv3lWLhSyaRzTHcJrp8ommHlL8BA&s" alt="construction workers">
+</body>
+</html>

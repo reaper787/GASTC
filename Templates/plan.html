@@ -50,9 +50,9 @@
                     <span class="text">Home</span>
 
                 </li>
-                <li class="link" id="market">
+                <li class="link" id="market" onclick="analize()">
                     <i class="fa-solid fa-money-bill-trend-up icon"></i>
-                    <span class="text">Home</span>
+                    <span class="text">Finance</span>
                 </li>
             </ul>
         </nav>
@@ -108,6 +108,16 @@
             return planText;
         }
 
+        function analize(){
+            window.location.href=`{{url_for('market')}}`;
+            fetch('http://127.0.0.1:5000/market', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ companyName }),
+            })
+        }
     </script>
     <script src="{{ url_for('static', filename='loading.js') }}"></script>
 </body>
