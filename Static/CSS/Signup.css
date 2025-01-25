@@ -22,9 +22,11 @@ body {
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }
@@ -69,7 +71,8 @@ h2 {
     border-radius: 5px;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
-    resize: none; /* Prevent resizing for textarea */
+    resize: none;
+    /* Prevent resizing for textarea */
     box-sizing: border-box;
 }
 
@@ -82,7 +85,8 @@ h2 {
 
 /* Adjust textarea height (optional) */
 .input-group textarea {
-    height: 100px; /* Adjust height to your preference */
+    height: 100px;
+    /* Adjust height to your preference */
 }
 
 .btn {
@@ -120,6 +124,7 @@ h2 {
     0% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
@@ -174,18 +179,26 @@ h2 {
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
 }
+
 .fade-out {
     opacity: 0;
 }
+
 .fade-in {
     opacity: 1;
 }
+
 .hidden {
     display: none;
 }
-.loading{
-    font-family:'Montserrat', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+.loading {
+    font-family: 'Montserrat', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     text-align: center;
     margin-top: auto;
     margin-bottom: auto;
+}
+
+input#RememberMe {
+    margin-top: 5px;
 }

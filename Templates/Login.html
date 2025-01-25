@@ -43,7 +43,9 @@
             <button class="button type1" type="submit" id="submit-btn">
                 <span class="btn-txt">Login</span>
             </button>
-            <label for= "RememberMe">
+            <br>
+            <br>
+            <label for="RememberMe" style='margin-top: 5px;'>
                 <input type="checkbox" id="RememberMe" name="RememberMe"> Remember Me
             </label>
         </form>
@@ -52,7 +54,7 @@
     <h1 class="hidden loading">Loading...</h1>
 
     <script>
-        if (localStorage.getItem('companyName') != null){
+        if (localStorage.getItem('companyName') != null) {
 
             window.location.href = "{{ url_for('plan') }}";
 
@@ -64,7 +66,7 @@
             const companyName = document.getElementById('company').value.trim();
             const inputPassword = document.getElementById('password').value.trim();
 
-            if(!companyName || !inputPassword) {
+            if (!companyName || !inputPassword) {
                 alert("Please fill in all fields.");
                 return;
             }
@@ -84,24 +86,24 @@
                                 headers: {
                                     'Content-Type': 'application/json',
                                 },
-                                body: JSON.stringify({ companyName }),
+                                body: JSON.stringify({companyName}),
                             })
-                                 .then(response => response.json())
-                                 .then(data => {
-                                     console.log('Response from server:', data);
-                                 })
-                                 .catch(error => {
-                                     console.error('Error sending data to server:', error);
-                                 });
-                        
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log('Response from server:', data);
+                                })
+                                .catch(error => {
+                                    console.error('Error sending data to server:', error);
+                                });
+
                             const cb = document.querySelector('#RememberMe');
-                            
+
                             if (cb.checked) {
                                 localStorage.setItem('companyName', companyName);
                             } else {
                                 sessionStorage.setItem('companyName', companyName);
                             }
-                            
+
                             window.location.href = `${planUrl}`;
                         } else {
                             alert('Incorrect password. Please try again.');
