@@ -8,12 +8,12 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv, find_dotenv
 from waitress import serve
-from phi.agent import Agent
-from phi.model.openai import OpenAIChat
-from phi.tools.googlesearch import GoogleSearch
-from phi.tools.yfinance import YFinanceTools
+# from phi.agent import Agent
+# from phi.model.openai import OpenAIChat
+# from phi.tools.googlesearch import GoogleSearch
+# from phi.tools.yfinance import YFinanceTools
 
-_=load_dotenv(find_dotenv())
+_ = load_dotenv(find_dotenv())
 client = OpenAI(
     api_key=os.environ.get('OPENAI_API_KEY')
 )
@@ -31,15 +31,18 @@ app = Flask(__name__, static_folder="Static", template_folder='Templates')
 
 CORS(app)
 
+
 def getResponse(messages):
+
     completion = client.chat.completions.create(
-        model = model,
-        temperature = temperature,
-        max_tokens= max_tokens,
-        messages = messages
+        model=model,
+        temperature=temperature,
+        max_tokens=max_tokens,
+        messages=messages
 
     )
     return completion.choices[0].message.content
+
 
 @app.route('/prompt', methods=['POST'])
 def handle_login():
@@ -86,11 +89,17 @@ def handle_login():
             target_audience = doc_dict.get('targetAudience')
 
             # Construct the prompt with the variables
-            prompt = f"""create a start up template and plan using the following details. Perenthesis mean that it was inputed from a form submitted by the buisness owner.
+            prompt = f"""create a start up template and plan using the 
+            following details. Perenthesis mean that it was inputed from a form
+            submitted by the buisness owner.
             My business is in the ({industry}) industry. 
             It will cost ({startup_cost}) to start this business. 
             My company name is ({company_name}). 
-            Here are some details about my product/s with the prices and how much it costs me to make: cost to make my best product:({cost_make}) and i'm selling it for this much: ({sell_price}), some details about my products: ({product_details}) cost to make all my products: ({product_prices})
+            Here are some details about my product/s with the prices and how 
+            much it costs me to make: cost to make my best product:({cost_make}) 
+            and i'm selling it for this much: ({sell_price}), 
+            some details about my products: ({product_details}) 
+            cost to make all my products: ({product_prices})
             The central theme around all of my product/s is/are: ({product_description})
             I need help on this: ({help_needed}). 
             This is why people should buy my product/s: ({why_buy})
@@ -134,7 +143,7 @@ def handle_login():
                 "buisnessPlan": buisness_plan,
             })
         
-        print(doc_dict.get('buisnessPlan') + f' {visits}')
+        print(doc_dict.get('buisnessPlan') + f' visits: {visits}')
 
         return jsonify({'message': f"Company name {company_name} exists", 'data': doc_dict, 'company_name': company_name}), 200
 
@@ -236,8 +245,6 @@ def market():
     )
     '''
     return render_template('market.html')
-
-
 
 
 if __name__ == '__main__':
