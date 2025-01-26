@@ -79,23 +79,29 @@
                         function sleep(ms) {
                             return new Promise(resolve => setTimeout(resolve, ms));
                         }
-
+                        //Me
                         if (data.password && data.password === inputPassword) {
-                            fetch('http://127.0.0.1:5000/prompt', {
+                            fetch('http://127.0.0.1:8000/prompt', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
                                 },
-                                body: JSON.stringify({companyName}),
-                            })
-                                .then(response => response.json())
+                                body: JSON.stringify({companyName: companyName}),
+                            }).then(response => response.json())
                                 .then(data => {
                                     console.log('Response from server:', data);
+                                    if (data.error) {
+                                        alert(data.error);
+                                    } else {
+                                        const cb = document.querySelector('#RememberMe');
+                                        if (cb.checked) {
+                                            localStorage.setItem('companyName', companyName);
+                                        } else {
+                                            sessionStorage.setItem('companyName', companyName);
+                                        }
+                                        window.location.href = planUrl; // Move this inside the success block
+                                    }
                                 })
-                                .catch(error => {
-                                    console.error('Error sending data to server:', error);
-                                });
-
                             const cb = document.querySelector('#RememberMe');
 
                             if (cb.checked) {
@@ -119,7 +125,6 @@
                     alert('Error logging in: ' + error.message);
                 });
         })
-
     </script>
 </body>
 

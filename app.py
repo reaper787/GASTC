@@ -13,6 +13,7 @@ from waitress import serve
 # from phi.tools.googlesearch import GoogleSearch
 # from phi.tools.yfinance import YFinanceTools
 
+
 _ = load_dotenv(find_dotenv())
 client = OpenAI(
     api_key=os.environ.get('OPENAI_API_KEY')
@@ -22,14 +23,19 @@ model = "gpt-4o-mini"
 temperature = 0.7
 max_tokens = 1500
 
-cred = credentials.Certificate(json.loads(os.environ.get('FIRESTORE_CONFIG')))
+firestore_config = os.environ.get('FIRESTORE_CONFIG')
+if not firestore_config:
+    raise ValueError(
+        "Environment variable 'FIRESTORE_CONFIG' is not set or is empty.")
+
+cred = credentials.Certificate(json.loads(firestore_config))
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
 app = Flask(__name__, static_folder="Static", template_folder='Templates')
 
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 def getResponse(messages):
@@ -48,6 +54,7 @@ def getResponse(messages):
 def handle_login():
     data = request.json
     company_name = data.get('companyName')
+    print(f"data: {data}")
 
     if not company_name:
         return jsonify({'error': 'Company name is required'}), 400
@@ -129,7 +136,8 @@ def handle_login():
             THIS IS THE MOST IMPORTANT PART. MAKE SURE TO ANSWER MY QUESTION AND CONCERNS AND AT THE VERY END, GIVE A TO-DO LIST IF YOU THINK IT IS NECESSARY
             MAKE SURE EVERY TINY LITTLE PART OF THE PROMPT IS RELIABLE INFORMATION THAT HAS BEEN TESTED.
             SHARE DETAILS ABOUT THE EXPECTED GROWTH AND HOW MANY EMPLOYEES THAT ARE EXPECTED TO HIRE AND IN ABOUT HOW LONg WILL I BREAK EVEN BASED ON THIS PROMPT AND DETAILS ABOUT COMPETITORS IN SIMMILAR FEILDS
-            AND DONT REPEAT INFORMATION. ADD A SWOT ANALYSIS AT THE END. 
+            AND DONT REPEAT INFORMATION. ADD A SWOT ANALYSIS AT THE END. IF THEY DON'T KNOW THE PRICE OF AN 
+            ITEM, INFER IT BASED ON THE MARKET ANALYSIS
             """
 
             messages = [
@@ -142,33 +150,39 @@ def handle_login():
                 "prompt": prompt,
                 "buisnessPlan": buisness_plan,
             })
-        
-        print(doc_dict.get('buisnessPlan') + f' visits: {visits}')
+
+        print(f' visits: {visits}')
 
         return jsonify({'message': f"Company name {company_name} exists", 'data': doc_dict, 'company_name': company_name}), 200
 
     else:
         print('Company doesn\'t exist')
         return jsonify({'error': 'Company doesn\'t Exists'}), 404
+
+
 @app.route('/')
 def home():
     return render_template('index.html')
+
 
 @app.route('/login')
 def login_form():
     return render_template('Login.html')
 
+
 @app.route('/signup')
 def signup():
     return render_template('Signup.html')
+
 
 @app.route('/plan')
 def plan():
     return render_template('plan.html')
 
+
 @app.route('/market', methods=['GET', 'POST'])
 def market():
-    '''
+    """
     doc_ref = db.collection('businessInfo').document(company_name)
     doc = doc_ref.get()
     doc_dict = doc.to_dict()
@@ -243,9 +257,9 @@ def market():
         "Ensure your response is accurate, comprehensive, and includes references to sources with publication dates.",
         stream=True
     )
-    '''
+    """
     return render_template('market.html')
 
 
 if __name__ == '__main__':
-    serve(app, host='0.0.0.0', port=5000)
+    serve(app, host='0.0.0.0', port=8000)
